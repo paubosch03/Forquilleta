@@ -4,6 +4,10 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -12,7 +16,29 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/login-google', function () {
+    return Socialite::driver('google')->redirect();
 });
+ 
+Route::get('/google-callback', function () {
+    $user = Socialite::driver('google')->user();
+
+    $userExist = User::where('email', $user->email)->first();
+    if ($userExist) {
+        $user = $userExist;
+    } else {
+        $user = User::create([
+            'name' => $user->name,
+            'email' => $user->email,
+            'oauth_id' => $user->id
+        ]);
+    }
+    Auth::login($user);
+    return redirect('/');
+});
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
