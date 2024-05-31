@@ -47,10 +47,12 @@ Route::get('/dashboard', function () {
 
 Route::get('/restaurantes', function () {
     return Inertia::render('Restaurantes/Restaurantes');
-});
+})->name('restaurantes');
 
 Route::get('/restaurantes/get', [RestaurantController::class, 'get']);
-Route::post('/restaurantes/add', [RestaurantController::class, 'add'])-> middleware(['auth', 'verified']);
+Route::post('/restaurants/add', [RestaurantController::class, 'add'])-> middleware(['auth', 'verified']);
+Route::delete('/restaurants/delete/{id}', [RestaurantController::class, 'delete']);
+Route::get('/restaurants/update/{id}', [RestaurantController::class, 'update']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

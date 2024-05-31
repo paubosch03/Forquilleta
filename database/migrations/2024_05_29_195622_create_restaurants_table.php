@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('description', 500);
             $table->integer('longitude');
             $table->integer('latitude');
-            $table->string('images')->nullable();
+            $table->string('city', 100);
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

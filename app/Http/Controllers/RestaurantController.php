@@ -20,6 +20,7 @@ class RestaurantController extends Controller
         $restaurant = new Restaurant();
         $restaurant->name = $request->name;
         $restaurant->description = $request->description;
+        $restaurant->city = $request->city;
         $restaurant -> longitude = $request->longitude;
         $restaurant -> latitude = $request->latitude;
         $restaurant -> user_id = Auth::id();
@@ -27,4 +28,29 @@ class RestaurantController extends Controller
 
         return response()->json('ok');
     }   
+
+    public function delete($id)
+    {
+        $restaurant = Restaurant::find($id);
+        if ($restaurant) {
+            $restaurant->delete();
+            return response()->json('Restaurant deleted successfully');
+        } else {
+            return response()->json('Restaurant not found', 404);
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        $restaurant = Restaurant::find($id);
+        if ($restaurant) {
+            $restaurant->name = $request->name;
+            $restaurant->description = $request->description;
+            $restaurant->city = $request->city;
+            $restaurant->save();
+            return response()->json('Restaurant updated successfully');
+        } else {
+            return response()->json('Restaurant not found', 404);
+        }
+    }
 }
