@@ -14,7 +14,7 @@ class Restaurant extends Model
         'description',
         'longitude',
         'latitude',
-        'images',
+        'city',
         'user_id',
     ];
 

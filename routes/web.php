@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\RestaurantController;
 
 
 Route::get('/', function () {
@@ -21,7 +22,7 @@ Route::get('/', function () {
 Route::get('/login-google', function () {
     return Socialite::driver('google')->redirect();
 });
- 
+
 Route::get('/google-callback', function () {
     $user = Socialite::driver('google')->user();
 
@@ -43,6 +44,15 @@ Route::get('/google-callback', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/restaurantes', function () {
+    return Inertia::render('Restaurantes/Restaurantes');
+})->name('restaurantes');
+
+Route::get('/restaurantes/get', [RestaurantController::class, 'get']);
+Route::post('/restaurants/add', [RestaurantController::class, 'add'])-> middleware(['auth', 'verified']);
+Route::delete('/restaurants/delete/{id}', [RestaurantController::class, 'delete']);
+Route::get('/restaurants/update/{id}', [RestaurantController::class, 'update']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
