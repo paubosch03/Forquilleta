@@ -5,21 +5,29 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Restaurant;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class RestaurantController extends Controller
 {
     public function getAll()
     {
-        // Obtener el ID del usuario autenticado
         $userId = Auth::id();
-        // // Realizar la consulta con join
+
+        // Obtener los restaurantes creados por el usuario
         $restaurants = Restaurant::with(['reviews' => function ($query) use ($userId) {
-            $query->where('user_id', $userId)->limit(1);
+            $query->where('user_id', $userId);
         }])->get();
+
+        // Iterar sobre los restaurantes para configurar el campo de reseña
         $restaurants->each(function ($restaurant) {
-            $restaurant->review = $restaurant->reviews->first();
+            if (!$restaurant->reviews->isEmpty()) {
+                $restaurant->review = $restaurant->reviews->first();
+            } else {
+                $restaurant->review = null;
+            }
             unset($restaurant->reviews);
         });
+
         return response()->json($restaurants);
     }
 
@@ -69,5 +77,19 @@ class RestaurantController extends Controller
         } else {
             return response()->json('Restaurant not found', 404);
         }
+    }
+
+    public function getRestaurantMap($star)
+    {
+
+
+        $restaurants = Restaurant::leftJoin('reviews', 'restaurants.id', '=', 'reviews.restaurant_id')
+            ->select('restaurants.*', DB::raw('ROUND(AVG(reviews.rating),1) as average_review_rating'))
+            ->groupBy('restaurants.id')
+            ->get();
+        $restaurants = $restaurants->filter(function ($restaurant) use ($star) {
+            return $restaurant->average_review_rating >= $star;
+        });
+        return response()->json($restaurants);
     }
 }

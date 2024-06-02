@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name', 200);
             $table->string('description', 500);
-            $table->integer('longitude');
-            $table->integer('latitude');
+            $table->float('longitude');
+            $table->float('latitude');
             $table->string('city', 100);
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
