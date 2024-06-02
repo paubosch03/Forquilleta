@@ -55,9 +55,9 @@ function deleteRestaurant() {
 <template>
     <div class="flex justify-center items-center h-full">
         <div
-            class="max-w-lg bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out dark:bg-gray-800 dark:border-gray-700 mr-4">
+            class="w-full max-w-2xl bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out dark:bg-gray-800 dark:border-gray-700 mr-4 restaurant-card">
             <a href="#">
-                <img class="rounded-t-lg w-full h-48 object-cover" :src="restaurant.image || '/images/logo.jpg'"
+                <img class="rounded-t-lg w-full h-64 object-cover" :src="restaurant.image || '/images/logo.jpg'"
                     alt="Restaurant Image" />
             </a>
             <div class="p-6">
@@ -83,7 +83,7 @@ function deleteRestaurant() {
 
     <!-- Modal -->
     <div v-if="isModalOpen"
-        class="fixed z-50 inset-0 overflow-y-auto bg-black bg-opacity-50 flex justify-center items-center">
+        class="fixed z-50 inset-0 overflow-y-auto bg-black bg-opacity-50 flex justify-center items-center modal-overlay">
         <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
             <div class="flex justify-between items-center border-b p-4">
                 <h3 class="text-lg font-semibold text-gray-800">Edit Restaurant</h3>
@@ -124,3 +124,7 @@ function deleteRestaurant() {
         </div>
     </div>
 </template>
+
+<style>
+
+</style>

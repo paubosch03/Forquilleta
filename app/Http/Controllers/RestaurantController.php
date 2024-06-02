@@ -8,26 +8,43 @@ use Illuminate\Support\Facades\Auth;
 
 class RestaurantController extends Controller
 {
-    public function get(){
+    public function getAll()
+    {
+        // Obtener el ID del usuario autenticado
+        $userId = Auth::id();
+        // // Realizar la consulta con join
+        $restaurants = Restaurant::with(['reviews' => function ($query) use ($userId) {
+            $query->where('user_id', $userId)->limit(1);
+        }])->get();
+        $restaurants->each(function ($restaurant) {
+            $restaurant->review = $restaurant->reviews->first();
+            unset($restaurant->reviews);
+        });
+        return response()->json($restaurants);
+    }
 
-        $restaurants = Restaurant::all();
+    public function getMyRestaurants()
+    {
+
+        $restaurants = Restaurant::where('user_id', Auth::id())->get();
 
         return response()->json($restaurants);
     }
 
-    public function add(Request $request){
+    public function add(Request $request)
+    {
 
         $restaurant = new Restaurant();
         $restaurant->name = $request->name;
         $restaurant->description = $request->description;
         $restaurant->city = $request->city;
-        $restaurant -> longitude = $request->longitude;
-        $restaurant -> latitude = $request->latitude;
-        $restaurant -> user_id = Auth::id();
+        $restaurant->longitude = $request->longitude;
+        $restaurant->latitude = $request->latitude;
+        $restaurant->user_id = Auth::id();
         $restaurant->save();
 
         return response()->json('ok');
-    }   
+    }
 
     public function delete($id)
     {

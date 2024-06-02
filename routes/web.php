@@ -8,6 +8,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\ReviewController;
 
 
 Route::get('/', function () {
@@ -49,10 +50,19 @@ Route::get('/restaurantes', function () {
     return Inertia::render('Restaurantes/Restaurantes');
 })->name('restaurantes');
 
-Route::get('/restaurantes/get', [RestaurantController::class, 'get']);
+Route::get('/restauranteReview',function(){
+    return Inertia::render('Restaurantes/RestaurantesReview');
+})->name('restauranteReview');
+
+Route::get('/restaurantes/getAll', [RestaurantController::class, 'getAll'])-> middleware(['auth', 'verified']);
+Route::get('/restaurantes/getMyRestaurants', [RestaurantController::class, 'getMyRestaurants'])-> middleware(['auth', 'verified']);
 Route::post('/restaurants/add', [RestaurantController::class, 'add'])-> middleware(['auth', 'verified']);
-Route::delete('/restaurants/delete/{id}', [RestaurantController::class, 'delete']);
-Route::get('/restaurants/update/{id}', [RestaurantController::class, 'update']);
+Route::delete('/restaurants/delete/{id}', [RestaurantController::class, 'delete'])-> middleware(['auth', 'verified']);
+Route::get('/restaurants/update/{id}', [RestaurantController::class, 'update'])-> middleware(['auth', 'verified']);
+
+Route::post('/review',[ReviewController::class, 'add'])-> middleware(['auth', 'verified']);
+Route::get('/review/update/{id}', [ReviewController::class, 'update'])-> middleware(['auth', 'verified']);
+Route::delete('/review/delete/{id}', [ReviewController::class, 'delete'])-> middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
