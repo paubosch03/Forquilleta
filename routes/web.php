@@ -54,11 +54,17 @@ Route::get('/restauranteReview',function(){
     return Inertia::render('Restaurantes/RestaurantesReview');
 })->name('restauranteReview');
 
+
+Route::get('/restauranteMap',function(){
+    return Inertia::render('Restaurantes/RestaurantMap');
+})->name('restauranteMap');
+
 Route::get('/restaurantes/getAll', [RestaurantController::class, 'getAll'])-> middleware(['auth', 'verified']);
 Route::get('/restaurantes/getMyRestaurants', [RestaurantController::class, 'getMyRestaurants'])-> middleware(['auth', 'verified']);
 Route::post('/restaurants/add', [RestaurantController::class, 'add'])-> middleware(['auth', 'verified']);
 Route::delete('/restaurants/delete/{id}', [RestaurantController::class, 'delete'])-> middleware(['auth', 'verified']);
 Route::get('/restaurants/update/{id}', [RestaurantController::class, 'update'])-> middleware(['auth', 'verified']);
+Route::get('/restaurants/getRestaurantMap/{star}', [RestaurantController::class, 'getRestaurantMap'])-> middleware(['auth', 'verified']);
 
 Route::post('/review',[ReviewController::class, 'add'])-> middleware(['auth', 'verified']);
 Route::get('/review/update/{id}', [ReviewController::class, 'update'])-> middleware(['auth', 'verified']);

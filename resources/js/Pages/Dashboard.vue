@@ -1,8 +1,36 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import L from 'leaflet';
 
+const map = ref(null);
+
+const getMap = (star) => {
+    axios.get(`/restaurants/getRestaurantMap/${star}`)
+        .then(response => {
+            response.data.forEach(element => {
+                console.log(element);
+                const reviewRating = element.average_review_rating !== null ? element.average_review_rating : "Sin reviews";
+                const marker = L.marker([element.latitude, element.longitude])
+                    .addTo(map.value)
+                    .bindPopup(`<b>Restaurant:</b> ${ element.name } <br> <b>Nota:</b> ${ reviewRating }`, { autoClose: false })
+                    .openPopup();
+            });
+            console.log("Mapa cargado correctamente:", response);
+        })
+        .catch(error => {
+            console.error("Hubo un error al cargar el mapa:", error);
+        });
+};
+
+onMounted(() => {
+    map.value = L.map(`map`).setView([42.2664500, 2.9616300], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map.value);
+    getMap(0);
+});
 
 </script>
 
@@ -81,6 +109,10 @@ import { ref } from 'vue';
                     <span class="sr-only">Next</span>
                 </span>
             </button>
+        </div>
+
+        <div class="mt-8">
+            <div :id="'map'" class="h-96"></div>
         </div>
 
 
