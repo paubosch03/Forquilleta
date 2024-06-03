@@ -126,7 +126,11 @@ import { Link } from '@inertiajs/vue3';
                         <a href="/login" class="text-white">Login</a>
                     </div>
                 </div>
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> 3817542 (NotFinished)
                 <div
                     :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
                     class="sm:hidden"
