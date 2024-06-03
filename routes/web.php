@@ -18,7 +18,7 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+});
 
 Route::get('/login-google', function () {
     return Socialite::driver('google')->redirect();

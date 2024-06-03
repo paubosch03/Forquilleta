@@ -14,7 +14,7 @@ import { Link } from '@inertiajs/vue3';
             <nav class="bg-gray-700 border-b border-gray-300">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex justify-between h-16">
+                    <div v-if="$page.props.auth.user" class="flex justify-between h-16">
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 mr-10 flex items-center">
@@ -117,8 +117,17 @@ import { Link } from '@inertiajs/vue3';
                             </button>
                         </div>
                     </div>
+                    <div v-else class="flex justify-between items-center">
+                        <div class="shrink-0 mr-10 flex items-center">
+                            <Link :href="route('dashboard')">
+                                <ApplicationLogo class="block h-9 w-auto fill-current text-gray-800" />
+                            </Link>
+                        </div>
+                        <a href="/login" class="text-white">Login</a>
+                    </div>
                 </div>
 
+            
                 <!-- Responsive Navigation Menu -->
                 <div
                     :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
