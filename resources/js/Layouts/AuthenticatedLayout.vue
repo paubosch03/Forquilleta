@@ -126,9 +126,7 @@ import { Link } from '@inertiajs/vue3';
                         <a href="/login" class="text-white">Login</a>
                     </div>
                 </div>
-
             
-                <!-- Responsive Navigation Menu -->
                 <div
                     :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
                     class="sm:hidden"
