@@ -12,7 +12,7 @@ use App\Http\Controllers\ReviewController;
 
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('Dashboard', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
@@ -63,11 +63,11 @@ Route::get('/restaurantes/getAll', [RestaurantController::class, 'getAll'])-> mi
 Route::get('/restaurantes/getMyRestaurants', [RestaurantController::class, 'getMyRestaurants'])-> middleware(['auth', 'verified']);
 Route::post('/restaurants/add', [RestaurantController::class, 'add'])-> middleware(['auth', 'verified']);
 Route::delete('/restaurants/delete/{id}', [RestaurantController::class, 'delete'])-> middleware(['auth', 'verified']);
-Route::get('/restaurants/update/{id}', [RestaurantController::class, 'update'])-> middleware(['auth', 'verified']);
+Route::put('/restaurants/update/{id}', [RestaurantController::class, 'update'])-> middleware(['auth', 'verified']);
 Route::get('/restaurants/getRestaurantMap/{star}', [RestaurantController::class, 'getRestaurantMap'])-> middleware(['auth', 'verified']);
 
 Route::post('/review',[ReviewController::class, 'add'])-> middleware(['auth', 'verified']);
-Route::get('/review/update/{id}', [ReviewController::class, 'update'])-> middleware(['auth', 'verified']);
+Route::put('/review/update/{id}', [ReviewController::class, 'update'])-> middleware(['auth', 'verified']);
 Route::delete('/review/delete/{id}', [ReviewController::class, 'delete'])-> middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
