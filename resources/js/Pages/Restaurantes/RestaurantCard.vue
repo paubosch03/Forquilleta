@@ -24,12 +24,10 @@ function closeModal() {
 }
 
 function saveChanges() {
-    axios.get(`/restaurants/update/${props.restaurant.id}`, {
-        params: {
-            name: editedName.value,
-            description: editedDescription.value,
-            city: editedCity.value
-        }
+    axios.put(`/restaurants/update/${props.restaurant.id}`, {
+        name: editedName.value,
+        description: editedDescription.value,
+        city: editedCity.value
     })
     .then(response => {
         console.log("Restaurant updated successfully:", response);
@@ -83,6 +81,7 @@ function deleteRestaurant() {
         class="fixed z-50 inset-0 overflow-y-auto bg-black bg-opacity-50 flex justify-center items-center modal-overlay">
         <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
             <div class="flex justify-between items-center border-b p-4">
+                <!-- Formulario para editar los restaurantes -->
                 <h3 class="text-lg font-semibold text-gray-800">Edit Restaurant</h3>
                 <button @click="closeModal" class="text-gray-600 hover:text-gray-800">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

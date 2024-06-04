@@ -19,7 +19,7 @@ const props = defineProps({
 
 const map = ref(null);
 let markers = [];
-
+//Axios para que nos devuelva los restaurantes con la media de las valoraciones
 const getMap = (star) => {
     axios.get(`/restaurants/getRestaurantMap/${star}`)
         .then(response => {
@@ -27,6 +27,7 @@ const getMap = (star) => {
             markers = [];
             response.data.forEach(element => {
                 console.log(element);
+                //Si el rating es diferent a null mostramos la media de las valoraciones, si no mostramos "Sin reviews"
                 const reviewRating = element.average_review_rating !== null ? element.average_review_rating : "Sin reviews";
                 const marker = L.marker([element.latitude, element.longitude])
                     .addTo(map.value)
@@ -59,7 +60,7 @@ const setRating = (star) => {
 </script>
 <template>
 <AuthenticatedLayout>
-    <!-- Map -->
+    <!-- Mapa para ver la media de las valoraciones del restaurante y los comentarios -->
     <div class="flex justify-center mt-4 space-x-4">
         <h3>Filtro nota restaurante:</h3>
         <template v-for="star in 5" :key="star">
