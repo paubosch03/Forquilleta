@@ -78,46 +78,47 @@ function deleteRestaurant() {
 
     <!-- Modal -->
     <div v-if="isModalOpen"
-        class="fixed z-50 inset-0 overflow-y-auto bg-black bg-opacity-50 flex justify-center items-center modal-overlay">
-        <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
-            <div class="flex justify-between items-center border-b p-4">
-                <!-- Formulario para editar los restaurantes -->
-                <h3 class="text-lg font-semibold text-gray-800">Edit Restaurant</h3>
-                <button @click="closeModal" class="text-gray-600 hover:text-gray-800">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-            <div class="p-4">
-                <div class="mb-4">
-                    <label for="edit-name" class="block text-sm font-medium text-gray-700">Name</label>
-                    <input id="edit-name" v-model="editedName" type="text"
-                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-                <div class="mb-4">
-                    <label for="edit-description" class="block text-sm font-medium text-gray-700">Description</label>
-                    <textarea id="edit-description" v-model="editedDescription" rows="3"
-                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
-                </div>
-                <div class="mb-4">
-                    <label for="edit-city" class="block text-sm font-medium text-gray-700">City</label>
-                    <input id="edit-city" v-model="editedCity" type="text"
-                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-                <div class="flex justify-end">
-                    <button @click="saveChanges" type="button"
-                        class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Save
-                    </button>
-                    <button @click="closeModal" type="button"
-                        class="ml-2 inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Cancel
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    class="fixed z-50 inset-0 overflow-y-auto bg-black bg-opacity-50 flex justify-center items-center modal-overlay">
+   <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
+       <div class="flex justify-between items-center border-b p-4">
+           <!-- Formulario para editar los restaurantes -->
+           <h3 class="text-lg font-semibold text-gray-800">Edit Restaurant</h3>
+           <button @click="closeModal" class="text-gray-600 hover:text-gray-800" aria-label="Close modal" title="Close modal">
+               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+               </svg>
+           </button>
+       </div>
+       <div class="p-4">
+           <div class="mb-4">
+               <label for="edit-name" class="block text-sm font-medium text-gray-700">Name</label>
+               <input id="edit-name" v-model="editedName" type="text"
+                      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+           </div>
+           <div class="mb-4">
+               <label for="edit-description" class="block text-sm font-medium text-gray-700">Description</label>
+               <textarea id="edit-description" v-model="editedDescription" rows="3"
+                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+           </div>
+           <div class="mb-4">
+               <label for="edit-city" class="block text-sm font-medium text-gray-700">City</label>
+               <input id="edit-city" v-model="editedCity" type="text"
+                      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+           </div>
+           <div class="flex justify-end">
+               <button @click="saveChanges" type="button"
+                       class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                   Save
+               </button>
+               <button @click="closeModal" type="button"
+                       class="ml-2 inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                   Cancel
+               </button>
+           </div>
+       </div>
+   </div>
+</div>
+
 </template>
 
 <style scoped>

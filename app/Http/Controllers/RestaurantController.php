@@ -81,15 +81,14 @@ class RestaurantController extends Controller
 
     public function getRestaurantMap($star)
     {
-
-
+        
         $restaurants = Restaurant::leftJoin('reviews', 'restaurants.id', '=', 'reviews.restaurant_id')
             ->select('restaurants.*', DB::raw('ROUND(AVG(reviews.rating),1) as average_review_rating'))
             ->groupBy('restaurants.id')
+            ->havingRaw('average_review_rating >= ?', [$star]) 
             ->get();
-        $restaurants = $restaurants->filter(function ($restaurant) use ($star) {
-            return $restaurant->average_review_rating >= $star;
-        });
+        
         return response()->json($restaurants);
     }
+    
 }

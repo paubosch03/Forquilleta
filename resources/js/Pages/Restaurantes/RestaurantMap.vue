@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { defineProps } from 'vue';
 import axios from 'axios';
 import L from 'leaflet';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -31,7 +30,7 @@ const getMap = (star) => {
                 console.log(element);
                 // Show average rating if not null, otherwise show "Sin reviews"
                 const reviewRating = element.average_review_rating !== null ? element.average_review_rating : "Sin reviews";
-                const marker = L.marker([element.latitude, element.longitude])
+                const marker = L.marker([element.latitude, element.longitude], {alt: element.name, title: element.name})
                     .addTo(map.value)
                     .bindPopup(`<b>Restaurant:</b> ${ element.name } <br> <b>Nota:</b> ${ reviewRating }`, { autoClose: false })
                     .openPopup();
@@ -49,7 +48,7 @@ onMounted(() => {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map.value);
-    getMap(0);
+    getMap(0); // Load all restaurants initially
 });
 
 const rating = ref(0);
