@@ -19,15 +19,17 @@ const props = defineProps({
 
 const map = ref(null);
 let markers = [];
-//Axios para que nos devuelva los restaurantes con la media de las valoraciones
+
+// Axios to get restaurants with average ratings
 const getMap = (star) => {
     axios.get(`/restaurants/getRestaurantMap/${star}`)
         .then(response => {
+            // Remove existing markers from the map
             markers.forEach(marker => map.value.removeLayer(marker));
             markers = [];
             response.data.forEach(element => {
                 console.log(element);
-                //Si el rating es diferent a null mostramos la media de las valoraciones, si no mostramos "Sin reviews"
+                // Show average rating if not null, otherwise show "Sin reviews"
                 const reviewRating = element.average_review_rating !== null ? element.average_review_rating : "Sin reviews";
                 const marker = L.marker([element.latitude, element.longitude])
                     .addTo(map.value)
@@ -43,7 +45,7 @@ const getMap = (star) => {
 };
 
 onMounted(() => {
-    map.value = L.map(`map`).setView([42.2664500, 2.9616300], 13);
+    map.value = L.map('map').setView([42.2664500, 2.9616300], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map.value);
@@ -56,20 +58,22 @@ const setRating = (star) => {
     rating.value = star;
     getMap(star);
 };
-
 </script>
+
 <template>
 <AuthenticatedLayout>
-    <!-- Mapa para ver la media de las valoraciones del restaurante y los comentarios -->
+    <!-- Adding the named anchor "close" -->
+    <div id="close"></div>
+    <!-- Filter for restaurant ratings -->
     <div class="flex justify-center mt-4 space-x-4">
         <h3>Filtro nota restaurante:</h3>
         <template v-for="star in 5" :key="star">
             <font-awesome-icon :icon="['fas', 'star']" :class="star <= rating ? 'text-yellow-500' : 'text-gray-300'"
-                class="w-6 h-6 cursor-pointer" @click="setRating(star)" />
+                class="w-6 h-6 cursor-pointer" @click="setRating(star)" :aria-label="`Set rating to ${star} star`" />
         </template>
     </div>
     <div class="mt-8">
-        <div :id="'map'" class="h-96"></div>
+        <div id="map" class="h-96"></div>
     </div>
 </AuthenticatedLayout>
 </template>
