@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { defineProps } from 'vue';
 import axios from 'axios';
 import L from 'leaflet';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -20,15 +19,18 @@ const props = defineProps({
 const map = ref(null);
 let markers = [];
 
+// Axios to get restaurants with average ratings
 const getMap = (star) => {
     axios.get(`/restaurants/getRestaurantMap/${star}`)
         .then(response => {
+            // Remove existing markers from the map
             markers.forEach(marker => map.value.removeLayer(marker));
             markers = [];
             response.data.forEach(element => {
                 console.log(element);
+                // Show average rating if not null, otherwise show "Sin reviews"
                 const reviewRating = element.average_review_rating !== null ? element.average_review_rating : "Sin reviews";
-                const marker = L.marker([element.latitude, element.longitude])
+                const marker = L.marker([element.latitude, element.longitude], {alt: element.name, title: element.name})
                     .addTo(map.value)
                     .bindPopup(`<b>Restaurant:</b> ${ element.name } <br> <b>Nota:</b> ${ reviewRating }`, { autoClose: false })
                     .openPopup();
@@ -42,11 +44,11 @@ const getMap = (star) => {
 };
 
 onMounted(() => {
-    map.value = L.map(`map`).setView([42.2664500, 2.9616300], 13);
+    map.value = L.map('map').setView([42.2664500, 2.9616300], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map.value);
-    getMap(0);
+    getMap(0); // Load all restaurants initially
 });
 
 const rating = ref(0);
@@ -55,20 +57,22 @@ const setRating = (star) => {
     rating.value = star;
     getMap(star);
 };
-
 </script>
+
 <template>
 <AuthenticatedLayout>
-    <!-- Map -->
+    <!-- Adding the named anchor "close" -->
+    <div id="close"></div>
+    <!-- Filter for restaurant ratings -->
     <div class="flex justify-center mt-4 space-x-4">
         <h3>Filtro nota restaurante:</h3>
         <template v-for="star in 5" :key="star">
             <font-awesome-icon :icon="['fas', 'star']" :class="star <= rating ? 'text-yellow-500' : 'text-gray-300'"
-                class="w-6 h-6 cursor-pointer" @click="setRating(star)" />
+                class="w-6 h-6 cursor-pointer" @click="setRating(star)" :aria-label="`Set rating to ${star} star`" />
         </template>
     </div>
     <div class="mt-8">
-        <div :id="'map'" class="h-96"></div>
+        <div id="map" class="h-96"></div>
     </div>
 </AuthenticatedLayout>
 </template>

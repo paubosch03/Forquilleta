@@ -16,9 +16,6 @@ let restaurantes = ref([]);
 
     <AuthenticatedLayout>
         <div>
-            <AddRestaurant></AddRestaurant>
-        </div>
-        <div>
             <RestaurantCardReview v-for="restaurant in restaurantes" :key="restaurant.id" :restaurant="restaurant" />
         </div>
     </AuthenticatedLayout>

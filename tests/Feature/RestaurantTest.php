@@ -1,34 +1,23 @@
 <?php
 
-namespace Tests\Feature;
-
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class RestaurantTest extends TestCase
-{
-    use RefreshDatabase;
+uses(\Illuminate\Foundation\Testing\RefreshDatabase::class)
+    ->beforeEach(function () {
+        $this->user = User::factory()->create();
+    })
+    ->group('restaurants');
 
-    /** @test */
-    public function it_displays_restaurants_page()
-    {
-        $user = User::factory()->create();
+it('displays the restaurants page', function () {
+    $response = $this->actingAs($this->user)->get('/restaurantes');
 
-        $response = $this->actingAs($user)->get('/restaurantes');
-        $response->assertStatus(200);
-        $response->assertSee('Restaurantes');
-    }
+    expect($response->status())->toBe(200);
+    expect($response->content())->toContain('Restaurantes');
+});
 
-    /** @test */
-    public function it_fetches_all_restaurants()
-    {
-        $user = User::factory()->create();
+it('fetches all restaurants', function () {
+    $response = $this->actingAs($this->user)->get('/restaurantes/getAll');
 
-        $response = $this->actingAs($user)->get('/restaurantes/getAll');
-        $response->assertStatus(200);
-        // Add assertions for the response content if necessary
-    }
-
-    
-}
+    expect($response->status())->toBe(200);
+    // Add more expectations as necessary for response content
+});
